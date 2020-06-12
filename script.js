@@ -7,9 +7,45 @@ var user = {
     vx: 0,
     vy: 0,
 }
+var missile = {
+    fired: false,
+    endX: 100,
+    endY: 65,
+    x: 100,
+    y: 109,
+    step: 0,
+}
+var explosion ={
+    x: 100,
+    y: 65,
+}
 function clearCanvas(){
     ctx.fillStyle = "#000000";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+step = 0
+function drawMissile(step){
+    if(missile.fired === true){
+        if(step < 50){
+            missile.x -= ((100 - missile.endX)*0.02)
+            missile.y -= ((109 - missile.endY)*0.02)
+            ctx.fillStyle = "#FFFF00"
+            ctx.fillRect(missile.x, missile.y, 1, 1);
+            missile.step +=1
+            setTimeout(drawMissile, 100, missile.step)
+        } 
+        if(missile.y < missile.endY){
+            missile.fired = false;
+            missile.x = 100;
+            missile.y = 109;
+            missile.step = 0;
+            explosion(missile.endX,missile.endY)
+        } 
+    }
+}
+function explosion(x,y){
+    explosion.x = x
+    explosion.y = y
 }
 function drawGround(){
 ctx.fillStyle = "#8B4513";
@@ -59,6 +95,7 @@ function update(){
 function game(){
     clearCanvas()
     drawGround()
+    drawMissile(0)
     drawCrosshair()
     update()
 }
@@ -81,8 +118,9 @@ function keyPressed(e){
     }
     else if(key == " ") {
     e.preventDefault();
-    if(user.lost === true){
-    }
+    missile.endX = user.x;
+    missile.endY = user.y;
+    missile.fired = true;
   }
 }
 function keyUp(e){
