@@ -138,8 +138,16 @@ function update(){
         user.x = 196
         user.vx = 0
     }
-    if(user.y+user.vy >= 0 && user.y+user.vy <= 90){
+    if(user.y+user.vy >= 0 && user.y+user.vy <= 104){
     user.y += user.vy
+    }
+    else if(user.y + user.vy <0){
+        user.y = 0
+        user.vy = 0
+    }
+    else if(user.x + user.vx >104){
+        user.y = 110
+        user.vy = 0
     }
 }
 function game(){
