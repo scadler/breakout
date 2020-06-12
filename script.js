@@ -21,6 +21,12 @@ var explosionStats ={
     y: [""],
     step: [""],
 }
+var bomb = {
+    endX: [""],
+    endY: [""],
+    x: [""],
+    y: [""],
+}
 function clearCanvas(){
     ctx.fillStyle = "#000000";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -57,7 +63,7 @@ function explosion(s){
     while(i < explosionStats.x.length){
         var step = explosionStats.step[i]
         if(step<50){
-            ctx.fillStyle = (step%2 === 1) ? "#FFFF00" : "#FFFFFF"
+            ctx.fillStyle = (step%2 === 1) ? "#cccc00" : "#cc0000"
             ctx.fillRect(explosionStats.x[i]-step%5,explosionStats.y[i]-step%5, 2*(step%5), 2*(step%5));
             explosionStats.step[i] += 1
             setTimeout(explosion, 100, 1)

@@ -4,4 +4,8 @@
     height:650px;
     width:1000px;
     image-rendering: pixelated;
+    border: 2px solid white;
+}
+html{
+    background-color: #222;
 }
