@@ -17,27 +17,41 @@ var missile = {
 }
 var explosionStats ={
     ready: false,
-    x: 100,
-    y: 65,
-    step: 0,
+    x: [""],
+    y: [""],
+    step: [""],
 }
 function clearCanvas(){
     ctx.fillStyle = "#000000";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 step = 0
-function explosion(step){
-    if(step === 0){
-        explosionStats.step = 0;
-        explosionStats.x = missile.endX
-        explosionStats.y = missile.endY
+function explosion(s){
+    if(s === 0){
+        // lx = explosionStats.x.length
+        // ly = explosionStats.y.length
+        // ls = explosionStats.step.length
+        explosionStats.step.push(0);
+        explosionStats.x.push(missile.endX)
+        explosionStats.y.push(missile.endY)
         explosion(1)
     }
-    if(step<50){
-        ctx.fillStyle = (step%2 === 1) ? "#FFFF00" : "#FFFFFF"
-        ctx.fillRect(explosionStats.x-step%5,explosionStats.y-step%5, 2*(step%5), 2*(step%5));
-        explosionStats.step += 1
-        setTimeout(explosion, 100, explosionStats.step)
+    var i = 0
+    while(i < explosionStats.x.length){
+        var step = explosionStats.step[i]
+        if(step<50){
+            ctx.fillStyle = (step%2 === 1) ? "#FFFF00" : "#FFFFFF"
+            ctx.fillRect(explosionStats.x[i]-step%5,explosionStats.y[i]-step%5, 2*(step%5), 2*(step%5));
+            explosionStats.step[i] += 1
+            setTimeout(explosion, 100, 1)
+            console.log( explosionStats.step[i]+" "+i)
+        }
+        else{
+            explosionStats.x.shift()
+            explosionStats.y.shift()
+            explosionStats.step.shift()
+        }
+        i++
     }
     
 }
@@ -131,9 +145,11 @@ function keyPressed(e){
     }
     else if(key == " ") {
     e.preventDefault();
-    missile.endX = user.x;
-    missile.endY = user.y;
-    missile.fired = true;
+    if(missile.fired === false){
+        missile.endX = user.x;
+        missile.endY = user.y;
+        missile.fired = true;
+    }
   }
 }
 function keyUp(e){
