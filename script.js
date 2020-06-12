@@ -25,6 +25,23 @@ function clearCanvas(){
     ctx.fillStyle = "#000000";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
+function drawCities(){
+    drawCity(20)
+    drawCity(40)
+    drawCity(60)
+    drawCity(130)
+    drawCity(150)
+    drawCity(170)
+}
+function drawCity(x){
+    ctx.fillStyle = "#7744FF"
+    ctx.fillRect(x, 115, 10, 1);
+    ctx.fillRect(x+2, 111, 2, 4);
+    ctx.fillRect(x+1, 114, 9, 2);
+    ctx.fillRect(x+4, 112, 1, 3);
+    ctx.fillRect(x+6, 111, 1, 3);
+    ctx.fillRect(x+7, 110, 2, 5);
+}
 step = 0
 function explosion(s){
     if(s === 0){
@@ -122,6 +139,7 @@ function update(){
 function game(){
     clearCanvas()
     drawGround()
+    drawCities()
     drawMissile(0)
     drawCrosshair()
     update()
