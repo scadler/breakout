@@ -63,7 +63,7 @@ function explosion(s){
     while(i < explosionStats.x.length){
         var step = explosionStats.step[i]
         if(step<50){
-            ctx.fillStyle = (step%6<3 ) ? "#cccc00" : "#888888"
+            ctx.fillStyle = (step%6<3 ) ? "#DDDD00" : "#888888"
             ctx.fillRect(explosionStats.x[i]-step%5,explosionStats.y[i]-step%5, 2*(step%5), 2*(step%5));
             explosionStats.step[i] += 1
             setTimeout(explosion, 100, 1)
@@ -145,8 +145,8 @@ function update(){
         user.y = 0
         user.vy = 0
     }
-    else if(user.x + user.vx >104){
-        user.y = 110
+    else if(user.y + user.vy >104){
+        user.y = 104
         user.vy = 0
     }
 }
