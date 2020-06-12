@@ -15,21 +15,38 @@ var missile = {
     y: 109,
     step: 0,
 }
-var explosion ={
+var explosionStats ={
+    ready: false,
     x: 100,
     y: 65,
+    step: 0,
 }
 function clearCanvas(){
     ctx.fillStyle = "#000000";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 step = 0
+function explosion(step){
+    if(step === 0){
+        explosionStats.step = 0;
+        explosionStats.x = missile.endX
+        explosionStats.y = missile.endY
+        explosion(1)
+    }
+    if(step<50){
+        ctx.fillStyle = (step%2 === 1) ? "#FFFF00" : "#FFFFFF"
+        ctx.fillRect(explosionStats.x-step%5,explosionStats.y-step%5, 2*(step%5), 2*(step%5));
+        explosionStats.step += 1
+        setTimeout(explosion, 100, explosionStats.step)
+    }
+    
+}
 function drawMissile(step){
     if(missile.fired === true){
         if(step < 50){
             missile.x -= ((100 - missile.endX)*0.02)
             missile.y -= ((109 - missile.endY)*0.02)
-            ctx.fillStyle = "#FFFF00"
+            ctx.fillStyle = "#CCCCCC"
             ctx.fillRect(missile.x, missile.y, 1, 1);
             missile.step +=1
             setTimeout(drawMissile, 100, missile.step)
@@ -39,13 +56,9 @@ function drawMissile(step){
             missile.x = 100;
             missile.y = 109;
             missile.step = 0;
-            explosion(missile.endX,missile.endY)
+            explosion(0)
         } 
     }
-}
-function explosion(x,y){
-    explosion.x = x
-    explosion.y = y
 }
 function drawGround(){
 ctx.fillStyle = "#8B4513";
