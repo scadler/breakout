@@ -40,7 +40,7 @@ function drawCities(){
     drawCity(170)
 }
 function drawCity(x){
-    ctx.fillStyle = "#7744FF"
+    ctx.fillStyle = "#4041BD"
     ctx.fillRect(x, 115, 10, 1);
     ctx.fillRect(x+2, 111, 2, 4);
     ctx.fillRect(x+1, 114, 9, 2);
@@ -98,7 +98,7 @@ function drawMissile(step){
     }
 }
 function drawGround(){
-ctx.fillStyle = "#8B4513";
+ctx.fillStyle = "#774817";
 ctx.fillRect(0, 116, 200, 14);
 ctx.fillRect(0, 110, 10, 6);
 ctx.fillRect(190, 110, 10, 6);
