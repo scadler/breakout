@@ -49,21 +49,18 @@ function drawCity(x){
     ctx.fillRect(x+7, 110, 2, 5);
 }
 step = 0
-function explosion(s){
+function explosion(s, i){
     if(s === 0){
-        // lx = explosionStats.x.length
-        // ly = explosionStats.y.length
-        // ls = explosionStats.step.length
         explosionStats.step.push(0);
         explosionStats.x.push(missile.endX)
         explosionStats.y.push(missile.endY)
         explosion(1)
     }
-    var i = 0
+    var i = 0;
     while(i < explosionStats.x.length){
         var step = explosionStats.step[i]
         if(step<50){
-            ctx.fillStyle = (step%6<3 ) ? "#DDDD00" : "#888888"
+            ctx.fillStyle = (step%25<4 ) ? "#B13221" : (step%25<9 ) ? "#4EB3C8" : (step%25<14 ) ? "#FDF986" : (step%25<19 ) ? "#5360C5" :  "#9B3470" 
             ctx.fillRect(explosionStats.x[i]-step%5,explosionStats.y[i]-step%5, 2*(step%5), 2*(step%5));
             explosionStats.step[i] += 1
             setTimeout(explosion, 100, 1)
