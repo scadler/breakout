@@ -6,6 +6,8 @@ var user = {
     y: 65,
     vx: 0,
     vy: 0,
+    step: 0,
+    opacity: 1,
 }
 var missile = {
     fired: false,
@@ -40,7 +42,8 @@ function drawCities(){
     drawCity(170)
 }
 function drawCity(x){
-    ctx.fillStyle = "#4041BD"
+    ctx.fillStyle =  "#15217E"
+    //"#4041BD"
     ctx.fillRect(x, 115, 10, 1);
     ctx.fillRect(x+2, 111, 2, 4);
     ctx.fillRect(x+1, 114, 9, 2);
@@ -60,7 +63,7 @@ function explosion(s, i){
     while(i < explosionStats.x.length){
         var step = explosionStats.step[i]
         if(step<50){
-            ctx.fillStyle = (step%25<4 ) ? "#B13221" : (step%25<9 ) ? "#4EB3C8" : (step%25<14 ) ? "#FDF986" : (step%25<19 ) ? "#5360C5" :  "#9B3470" 
+            ctx.fillStyle = (step%25<4 ) ? "#B13221" : (step%25<9 ) ? "#4EB3C8" : (step%25<14 ) ? "#FDF986" : (step%25<19 ) ? "#472F94" :  "#9B3470" 
             ctx.fillRect(explosionStats.x[i]-step%5,explosionStats.y[i]-step%5, 2*(step%5), 2*(step%5));
             explosionStats.step[i] += 1
             setTimeout(explosion, 100, 1)
@@ -95,15 +98,17 @@ function drawMissile(step){
     }
 }
 function drawGround(){
-ctx.fillStyle = "#774817";
-ctx.fillRect(0, 116, 200, 14);
-ctx.fillRect(0, 110, 10, 6);
-ctx.fillRect(190, 110, 10, 6);
-ctx.fillRect(83, 114, 34, 2);
-ctx.fillRect(89, 112, 22, 2);
-ctx.fillRect(95, 110, 10, 2);
-ctx.fillStyle = "#AAAAAA";
-ctx.fillRect(99, 109, 2, 1);
+    ctx.fillStyle = "#6A450F";
+    ctx.fillRect(0, 116, 200, 14);
+    ctx.fillRect(0, 110, 10, 6);
+    ctx.fillRect(190, 110, 10, 6);
+    ctx.fillRect(83, 114, 34, 2);
+    ctx.fillRect(89, 112, 22, 2);
+    ctx.fillRect(95, 110, 10, 2);
+    user.step += 1
+    user.opacity = (user.step%30 >= 14) ? 1 : 0.8
+    ctx.fillStyle = (user.step%60 >=29) ? `rgba(110, 130, 109, ${user.opacity})` : `rgba(64, 65, 189, ${user.opacity})`
+    ctx.fillRect(99, 109, 2, 1);
 }
 function drawCrosshair(){
     ctx.fillStyle = "#FFFFFF";
