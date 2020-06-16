@@ -26,10 +26,48 @@ var explosionStats ={
     step: [""],
 }
 var bomb = {
+    possibleEndX: ["20", "40", "60", "130", "150", "170"],
     endX: [""],
     endY: [""],
     x: [""],
     y: [""],
+    initialX: [""],
+    step: [""],
+}
+function generateBomb(){
+    var i = bomb.endX.length
+    if(i === 0){
+    bomb.endX[i] = bomb.possibleEndX[(Math.floor(Math.random()*7))]
+    bomb.endY[i] = 110;
+    bomb.initialX[i] = Math.floor(Math.random()*201)
+    bomb.x[i] = bomb.initialX[i]
+    bomb.y[i] = 0
+    bomb.step[i] = 0
+    }
+}
+function drawBomb(){
+    var i = 0
+    while( i < bomb.endX.length){
+        if(bomb.step[i] < 100){
+            ctx.strokeStyle = "#FFFF00";
+            ctx.beginPath();
+            ctx.moveTo(bomb.initialX[i], 0);
+            ctx.lineTo(bomb.x[i], bomb.y[i]);
+            bomb.x[i] = (bomb.initialX[i] + ((bomb.endX[i])*(bomb.step[i]/100)))
+            bomb.y[i] = bomb.endY[i]*(bomb.step[i]/100)
+            ctx.stroke();
+            bomb.step[i] += 1
+        }
+        if(bomb.step[i] >= 100){
+            bomb.endX.shift()
+            bomb.endY.shift()
+            bomb.x.shift()
+            bomb.y.shift()
+            bomb.initialX.shift()
+            bomb.step.shift()
+        }
+        i++
+    }
 }
 function clearCanvas(){
     ctx.fillStyle = "#000000";
@@ -77,7 +115,7 @@ function explosion(s, i){
             ctx.fillRect(explosionStats.x[i]-(Math.floor(step*0.6)%5),explosionStats.y[i]-(Math.floor(step*0.6)%5), 2*(Math.floor(step*0.6)%5), 2*(Math.floor(step*0.6)%5));
             explosionStats.step[i] += 1
             setTimeout(explosion, 100, 1)
-            console.log( explosionStats.step[i]+" "+i)
+
         }
         else{
             explosionStats.x.shift()
@@ -176,6 +214,8 @@ function game(){
     drawRemainingMissiles()
     drawCrosshair()
     update()
+    generateBomb()
+    drawBomb()
 }
 setInterval(game, 50)
 document.addEventListener('keydown', keyPressed)
