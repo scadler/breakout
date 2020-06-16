@@ -8,7 +8,8 @@ var user = {
     vy: 0,
     step: 0,
     opacity: 1,
-    color: ["#777777", "#999999", "#bbbbbb", "#aaaaaa", "#888888",] 
+    color: ["#777777", "#999999", "#bbbbbb", "#aaaaaa", "#888888",],
+    remaining: 30,
 }
 var missile = {
     fired: false,
@@ -53,6 +54,14 @@ function drawCity(x){
     ctx.fillRect(x+7, 110, 2, 5);
 }
 step = 0
+function drawRemainingMissiles(){
+    var i = 0
+    while(i < user.remaining){
+        ctx.fillStyle = "#202020";
+        ctx.fillRect(7+(i*2), 122, 1, 3);
+        i++;
+    }
+}
 function explosion(s, i){
     if(s === 0){
         explosionStats.step.push(0);
@@ -80,7 +89,7 @@ function explosion(s, i){
     
 }
 function drawMissile(step){
-    if(missile.fired === true){
+    if(missile.fired === true && user.remaining >= 0){
         if(step < 50){
             missile.x -= ((100 - missile.endX)*0.02)
             missile.y -= ((109 - missile.endY)*0.02)
@@ -106,7 +115,9 @@ function drawGround(){
     ctx.fillRect(83, 114, 34, 2);
     ctx.fillRect(89, 112, 22, 2);
     ctx.fillRect(95, 110, 10, 2);
-    user.step += 1
+    if(user.remaining > 0){
+        user.step += 1
+    }
     user.opacity = (user.step%30 <= 14) ? 1 : 0.85
     ctx.fillStyle = user.color[Math.floor(user.step*0.5)%5]
     ctx.fillRect(99, 109, 1, 1); 
@@ -162,6 +173,7 @@ function game(){
     drawGround()
     drawCities()
     drawMissile(0)
+    drawRemainingMissiles()
     drawCrosshair()
     update()
 }
@@ -185,6 +197,7 @@ function keyPressed(e){
     else if(key == " ") {
     e.preventDefault();
     if(missile.fired === false){
+        user.remaining -= 1
         missile.endX = user.x;
         missile.endY = user.y;
         missile.fired = true;
