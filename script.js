@@ -8,6 +8,7 @@ var user = {
     vy: 0,
     step: 0,
     opacity: 1,
+    color: ["#777777", "#999999", "#bbbbbb", "#aaaaaa", "#888888",] 
 }
 var missile = {
     fired: false,
@@ -64,7 +65,7 @@ function explosion(s, i){
         var step = explosionStats.step[i]
         if(step<50){
             ctx.fillStyle = (step%25<4 ) ? "#B13221" : (step%25<9 ) ? "#4EB3C8" : (step%25<14 ) ? "#FDF986" : (step%25<19 ) ? "#472F94" :  "#9B3470" 
-            ctx.fillRect(explosionStats.x[i]-step%5,explosionStats.y[i]-step%5, 2*(step%5), 2*(step%5));
+            ctx.fillRect(explosionStats.x[i]-(Math.floor(step*0.6)%5),explosionStats.y[i]-(Math.floor(step*0.6)%5), 2*(Math.floor(step*0.6)%5), 2*(Math.floor(step*0.6)%5));
             explosionStats.step[i] += 1
             setTimeout(explosion, 100, 1)
             console.log( explosionStats.step[i]+" "+i)
@@ -106,9 +107,13 @@ function drawGround(){
     ctx.fillRect(89, 112, 22, 2);
     ctx.fillRect(95, 110, 10, 2);
     user.step += 1
-    user.opacity = (user.step%30 >= 14) ? 1 : 0.8
-    ctx.fillStyle = (user.step%60 >=29) ? `rgba(110, 130, 109, ${user.opacity})` : `rgba(64, 65, 189, ${user.opacity})`
-    ctx.fillRect(99, 109, 2, 1);
+    user.opacity = (user.step%30 <= 14) ? 1 : 0.85
+    ctx.fillStyle = user.color[Math.floor(user.step*0.5)%5]
+    ctx.fillRect(99, 109, 1, 1); 
+    user.opacity = (user.step%60 > 14) ? 1 : 0.85
+    ctx.fillStyle = user.color[(Math.floor(user.step*0.5)+1)%5]
+    ctx.fillRect(100, 109, 1, 1); 
+    //
 }
 function drawCrosshair(){
     ctx.fillStyle = "#FFFFFF";
