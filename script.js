@@ -91,8 +91,8 @@ function explosion(s, i){
 function drawMissile(step){
     if(missile.fired === true && user.remaining >= 0){
         if(step < 50){
-            missile.x -= ((100 - missile.endX)*0.02)
-            missile.y -= ((109 - missile.endY)*0.02)
+            missile.x -= ((100 - missile.endX)*0.04)
+            missile.y -= ((109 - missile.endY)*0.04)
             ctx.fillStyle = "#CCCCCC"
             ctx.fillRect(missile.x, missile.y, 1, 1);
             missile.step +=1
