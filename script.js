@@ -100,7 +100,7 @@ function drawRemainingMissiles(){
         i++;
     }
 }
-function explosion(s, i){
+function explosion(s){
     if(s === 0){
         explosionStats.step.push(0);
         explosionStats.x.push(missile.endX)
@@ -110,12 +110,12 @@ function explosion(s, i){
     var i = 0;
     while(i < explosionStats.x.length){
         var step = explosionStats.step[i]
-        if(step<50){
+        if(step<32){
             ctx.fillStyle = (step%25<4 ) ? "#B13221" : (step%25<9 ) ? "#4EB3C8" : (step%25<14 ) ? "#FDF986" : (step%25<19 ) ? "#472F94" :  "#9B3470" 
             ctx.fillRect(explosionStats.x[i]-(Math.floor(step*0.6)%5),explosionStats.y[i]-(Math.floor(step*0.6)%5), 2*(Math.floor(step*0.6)%5), 2*(Math.floor(step*0.6)%5));
             explosionStats.step[i] += 1
-            setTimeout(explosion, 100, 1)
-
+            // setTimeout(explosion, 100,)
+            console.log(step+"______"+i+i+i+i+i)
         }
         else{
             explosionStats.x.shift()
@@ -123,6 +123,9 @@ function explosion(s, i){
             explosionStats.step.shift()
         }
         i++
+        // if(i === explosionStats.x.length){
+        //     setTimeout(explosion, 100,)
+        // }
     }
     
 }
@@ -216,6 +219,9 @@ function game(){
     update()
     generateBomb()
     drawBomb()
+    if(0 !== explosionStats.x.length){
+            setTimeout(explosion, 75,)
+        }
 }
 setInterval(game, 50)
 document.addEventListener('keydown', keyPressed)
