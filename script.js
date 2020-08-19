@@ -10,6 +10,8 @@ var user = {
     opacity: 1,
     color: ["#777777", "#999999", "#bbbbbb", "#aaaaaa", "#888888",],
     remaining: 30,
+    salvos: 2,
+    score: 0,
 }
 var missile = {
     fired: false,
@@ -43,19 +45,15 @@ var uy = 0
 $(document).mousemove(function(e) {
         $mouseX=e.pageX;
         $mouseY=e.pageY;
-        // ctx.fillStyle =  "#FFFFFF"
-        // ctx.fillRect($mouseX, $mouseY, 1, 1);
     }
 );
 var $loop=setInterval(function() {
-            // higher # = slower tracking
             $xp +=($mouseX - $xp);
             $yp +=($mouseY - $yp);
-            // user.x = Math.floor($xp/5)
-            // user.y = Math.floor($yp/5)
-            //+=(($mouseX - $xp - ($("#spaceship").width()/2))/20);
-// ctx.fillStyle =  "#FFFFFF"
-//         ctx.fillRect(Math.floor($xp/5), Math.floor($yp/5), 1, 1);
+            user.x = Math.floor($xp/5)
+            user.y = Math.floor($yp/5)
+ctx.fillStyle =  "#FFFFFF"
+        ctx.fillRect(Math.floor($xp/5), Math.floor($yp/5), 1, 1);
     }, 30);
 function generateBomb(){
     var i = bomb.endX.length
@@ -72,7 +70,7 @@ function drawBomb(){
     var i = 0
     while( i < bomb.endX.length){
         if(bomb.step[i] < 203){
-            ctx.strokeStyle = "#FFFF00";
+            ctx.strokeStyle = "#FFFF44";
             ctx.beginPath();
             ctx.moveTo(bomb.initialX[i], 0);
             ctx.lineTo(bomb.x[i], bomb.y[i]);
@@ -108,7 +106,6 @@ function collision(){
                 explosionStats.x[b] + 2.5 > bomb.x[i] -1 &&
                 explosionStats.y[b] -2.5 < bomb.y[i] + 1 &&
                 explosionStats.y[b] + 2.5 > bomb.y[i] -1){
-                    console.log(b+" "+i)
                 bomb.initialX.splice(i, 1)
                 bomb.x.splice(i, 1)
                 bomb.y.splice(i, 1)
@@ -154,6 +151,20 @@ function drawRemainingMissiles(){
         ctx.fillStyle = "#202020";
         ctx.fillRect(7+(i*2), 122, 1, 3);
         i++;
+    }
+    if(user.salvos > 0){
+        ctx.fillStyle = "#202020";
+        ctx.fillRect(70, 122, 6, 3);
+    }
+    if(user.salvos > 1){
+        ctx.fillStyle = "#202020";
+        ctx.fillRect(80, 122, 6, 3);
+    }
+    if(user.remaining === 0){
+        if(user.salvos > 0){
+            user.remaining = 30
+            user.salvos -=1
+        }
     }
 }
 function explosion(s){
@@ -216,7 +227,6 @@ function drawGround(){
     user.opacity = (user.step%60 > 14) ? 1 : 0.85
     ctx.fillStyle = user.color[(Math.floor(user.step*0.5)+1)%5]
     ctx.fillRect(100, 109, 1, 1); 
-    //
 }
 function drawCrosshair(){
     ctx.fillStyle = "#FFFFFF";
@@ -259,6 +269,7 @@ function update(){
         user.y = 104
         user.vy = 0
     }
+    // $("#score").append(user.score)
 }
 function game(){
     clearCanvas()

@@ -5,7 +5,16 @@
     width:1000px;
     image-rendering: pixelated;
     border: 2px solid white;
+    cursor: none;
 }
 html{
     background-color: #222;
 }
+/* #scoreDiv{
+    position: absolute;
+    top: 2;
+    left:2;
+    font-size: 3;
+    color: white;
+    z-index: 100;
+} */
