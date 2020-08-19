@@ -26,7 +26,7 @@ var explosionStats ={
     step: [""],
 }
 var bomb = {
-    possibleEndX: ["20", "40", "60", "130", "150", "170"],
+    possibleEndX: ["25", "45", "65", "135", "155", "175"],
     endX: [""],
     endY: [""],
     x: [""],
@@ -36,8 +36,9 @@ var bomb = {
 }
 function generateBomb(){
     var i = bomb.endX.length
-    if(i === 0){
-    bomb.endX[i] = bomb.possibleEndX[(Math.floor(Math.random()*7))]
+    if(i < 3){
+    bomb.endX[i] = bomb.possibleEndX[(Math.floor(Math.random()*6))]
+    console.log(bomb.endX)
     bomb.endY[i] = 110;
     bomb.initialX[i] = Math.floor(Math.random()*201)
     bomb.x[i] = bomb.initialX[i]
@@ -48,17 +49,17 @@ function generateBomb(){
 function drawBomb(){
     var i = 0
     while( i < bomb.endX.length){
-        if(bomb.step[i] < 100){
+        if(bomb.step[i] < 103){
             ctx.strokeStyle = "#FFFF00";
             ctx.beginPath();
             ctx.moveTo(bomb.initialX[i], 0);
             ctx.lineTo(bomb.x[i], bomb.y[i]);
-            bomb.x[i] = (bomb.initialX[i] + ((bomb.endX[i])*(bomb.step[i]/100)))
+            bomb.x[i] = (bomb.initialX[i] - ((bomb.initialX[i] - bomb.endX[i])*(bomb.step[i]/100)))
             bomb.y[i] = bomb.endY[i]*(bomb.step[i]/100)
             ctx.stroke();
             bomb.step[i] += 1
         }
-        if(bomb.step[i] >= 100){
+        if(bomb.step[i] >= 103){
             bomb.endX.shift()
             bomb.endY.shift()
             bomb.x.shift()
