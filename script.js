@@ -34,6 +34,29 @@ var bomb = {
     initialX: [""],
     step: [""],
 }
+var $mouseX=0,
+$mouseY=0;
+var $xp=0,
+$yp=0;
+var ux = 0
+var uy = 0
+$(document).mousemove(function(e) {
+        $mouseX=e.pageX;
+        $mouseY=e.pageY;
+        // ctx.fillStyle =  "#FFFFFF"
+        // ctx.fillRect($mouseX, $mouseY, 1, 1);
+    }
+);
+var $loop=setInterval(function() {
+            // higher # = slower tracking
+            $xp +=($mouseX - $xp);
+            $yp +=($mouseY - $yp);
+            // user.x = Math.floor($xp/5)
+            // user.y = Math.floor($yp/5)
+            //+=(($mouseX - $xp - ($("#spaceship").width()/2))/20);
+// ctx.fillStyle =  "#FFFFFF"
+//         ctx.fillRect(Math.floor($xp/5), Math.floor($yp/5), 1, 1);
+    }, 30);
 function generateBomb(){
     var i = bomb.endX.length
     if(i < 3){
@@ -115,7 +138,6 @@ function explosion(s){
             ctx.fillStyle = (step%25<4 ) ? "#B13221" : (step%25<9 ) ? "#4EB3C8" : (step%25<14 ) ? "#FDF986" : (step%25<19 ) ? "#472F94" :  "#9B3470" 
             ctx.fillRect(explosionStats.x[i]-(Math.floor(step*0.6)%5),explosionStats.y[i]-(Math.floor(step*0.6)%5), 2*(Math.floor(step*0.6)%5), 2*(Math.floor(step*0.6)%5));
             explosionStats.step[i] += 1
-            // setTimeout(explosion, 100,)
             console.log(step+"______"+i+i+i+i+i)
         }
         else{
@@ -124,9 +146,6 @@ function explosion(s){
             explosionStats.step.shift()
         }
         i++
-        // if(i === explosionStats.x.length){
-        //     setTimeout(explosion, 100,)
-        // }
     }
     
 }
