@@ -60,8 +60,7 @@ var $loop=setInterval(function() {
 function generateBomb(){
     var i = bomb.endX.length
     if(i < 3){
-    bomb.endX[i] = bomb.possibleEndX[(Math.floor(Math.random()*6))]
-    console.log(bomb.endX)
+    bomb.endX[i] = bomb.possibleEndX[(Math.floor(Math.random()*bomb.possibleEndX.length))]
     bomb.endY[i] = 110;
     bomb.initialX[i] = Math.floor(Math.random()*201)
     bomb.x[i] = bomb.initialX[i]
@@ -72,17 +71,24 @@ function generateBomb(){
 function drawBomb(){
     var i = 0
     while( i < bomb.endX.length){
-        if(bomb.step[i] < 103){
+        if(bomb.step[i] < 203){
             ctx.strokeStyle = "#FFFF00";
             ctx.beginPath();
             ctx.moveTo(bomb.initialX[i], 0);
             ctx.lineTo(bomb.x[i], bomb.y[i]);
-            bomb.x[i] = (bomb.initialX[i] - ((bomb.initialX[i] - bomb.endX[i])*(bomb.step[i]/100)))
-            bomb.y[i] = bomb.endY[i]*(bomb.step[i]/100)
+            bomb.x[i] = (bomb.initialX[i] - ((bomb.initialX[i] - bomb.endX[i])*(bomb.step[i]/200)))
+            bomb.y[i] = bomb.endY[i]*(bomb.step[i]/200)
             ctx.stroke();
             bomb.step[i] += 1
         }
-        if(bomb.step[i] >= 103){
+        if(bomb.step[i] >= 203){
+            var b = 0
+            while(b < bomb.possibleEndX.length){
+                if( bomb.possibleEndX[b] === bomb.endX[i]){
+                    bomb.possibleEndX.splice(b,1)
+                }
+                b++
+            }
             bomb.endX.shift()
             bomb.endY.shift()
             bomb.x.shift()
@@ -91,6 +97,28 @@ function drawBomb(){
             bomb.step.shift()
         }
         i++
+    }
+}
+function collision(){
+    var i = 0
+    while( i < bomb.endX.length){
+        var b = 0
+        while( b < explosionStats.x.length){
+            if (explosionStats.x[b] -2.5 < bomb.x[i] + 1 &&
+                explosionStats.x[b] + 2.5 > bomb.x[i] -1 &&
+                explosionStats.y[b] -2.5 < bomb.y[i] + 1 &&
+                explosionStats.y[b] + 2.5 > bomb.y[i] -1){
+                    console.log(b+" "+i)
+                bomb.initialX.splice(i, 1)
+                bomb.x.splice(i, 1)
+                bomb.y.splice(i, 1)
+                bomb.endX.splice(i, 1)
+                bomb.endY.splice(i, 1)
+                bomb.step.splice(i, 1)
+            }
+        b++
+        }
+    i++
     }
 }
 function clearCanvas(){
@@ -107,13 +135,17 @@ function drawCities(){
 }
 function drawCity(x){
     ctx.fillStyle =  "#15217E"
-    //"#4041BD"
+    //"#4041BD"'
+    var index = x+5
+    index = index.toString()
     ctx.fillRect(x, 115, 10, 1);
+    if(bomb.possibleEndX.includes(index) === true){
     ctx.fillRect(x+2, 111, 2, 4);
     ctx.fillRect(x+1, 114, 9, 2);
     ctx.fillRect(x+4, 112, 1, 3);
     ctx.fillRect(x+6, 111, 1, 3);
     ctx.fillRect(x+7, 110, 2, 5);
+    }
 }
 step = 0
 function drawRemainingMissiles(){
@@ -138,7 +170,6 @@ function explosion(s){
             ctx.fillStyle = (step%25<4 ) ? "#B13221" : (step%25<9 ) ? "#4EB3C8" : (step%25<14 ) ? "#FDF986" : (step%25<19 ) ? "#472F94" :  "#9B3470" 
             ctx.fillRect(explosionStats.x[i]-(Math.floor(step*0.6)%5),explosionStats.y[i]-(Math.floor(step*0.6)%5), 2*(Math.floor(step*0.6)%5), 2*(Math.floor(step*0.6)%5));
             explosionStats.step[i] += 1
-            console.log(step+"______"+i+i+i+i+i)
         }
         else{
             explosionStats.x.shift()
@@ -239,6 +270,7 @@ function game(){
     update()
     generateBomb()
     drawBomb()
+    collision()
     if(0 !== explosionStats.x.length){
             setTimeout(explosion, 75,)
         }
