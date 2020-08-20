@@ -21,6 +21,8 @@ var user = {
     remaining: 30,
     salvos: 2,
     score: 0,
+    levelOver: false,
+    nextLevel: false,
 }
 var missile = {
     fired: false,
@@ -45,6 +47,8 @@ var bomb = {
     initialX: [""],
     step: [""],
     max: 3,
+    maxIncrease: 0,
+    remaining: 30,
 }
 var $mouseX=0,
 $mouseY=0;
@@ -52,6 +56,7 @@ var $xp=0,
 $yp=0;
 var ux = 0
 var uy = 0
+colors.number = Math.floor(Math.random()*7)
 $(document).mousemove(function(e) {
         $mouseX=e.pageX;
         $mouseY=e.pageY;
@@ -61,13 +66,20 @@ var $loop=setInterval(function() {
             $xp +=($mouseX - $xp);
             $yp +=($mouseY - $yp);
             user.x = Math.floor($xp/5)
-            user.y = Math.floor($yp/5)
+            if(Math.floor($yp/5) < 105){
+                user.y = Math.floor($yp/5)
+            }
+            else{
+                user.y = 104
+            }
 ctx.fillStyle =  "#FFFFFF"
         ctx.fillRect(Math.floor($xp/5), Math.floor($yp/5), 1, 1);
     }, 30);
 function generateBomb(){
     var i = bomb.endX.length
-    if(i < bomb.max){
+    if(i < bomb.max && bomb.remaining > 0){
+    bomb.remaining -= 1;
+    console.log(bomb.remaining)
     bomb.endX[i] = bomb.possibleEndX[(Math.floor(Math.random()*bomb.possibleEndX.length))]
     bomb.endY[i] = 110;
     var offset = (Math.random() + 0.25 > 1) ? 10 : (Math.random() +0.5 > 1) ? 15 : (Math.random() + 0.75 > 1) ? 20: 25;
@@ -76,6 +88,9 @@ function generateBomb(){
     bomb.x[i] = bomb.initialX[i]
     bomb.y[i] = 0
     bomb.step[i] = 0
+    }
+    else if(user.levelOver === false && user.nextLevel === false){
+        user.levelOver = true
     }
 }
 function drawBomb(){
@@ -124,7 +139,7 @@ function collision(){
                     bomb.endX.splice(i, 1)
                     bomb.endY.splice(i, 1)
                     bomb.step.splice(i, 1)
-                    $("#score").text(Number($("#score").text()) + 10)
+                    $("#score").text(Number($("#score").text()) + 50)
             }
         b++
         }
@@ -175,13 +190,13 @@ function drawRemainingMissiles(){
         if(user.salvos > 0){
             user.remaining = 30;
             user.salvos -=1;
-            colors.number = (colors.number+1)%7
         }
         else if(user.salvos <= 0){
-            user.remaining = 30;
-            user.salvos = 3
-            bomb.max += 1;
-            colors.number = (colors.number+1)%7
+            user.levelOver = true
+            // user.remaining = 30;
+            // user.salvos = 3
+            // bomb.max += 1;
+            // colors.number = (colors.number+1)%7
         }
     }
 }
@@ -287,7 +302,29 @@ function update(){
         user.y = 104
         user.vy = 0
     }
+    if(bomb.remaining < 1 && bomb.endX.length === 0 && user.levelOver === true){
+        user.nextLevel = true
+        user.levelOver = false
+        //play sound here
+        setTimeout(nextLevel, 3000)
+    }
+    else if(bomb.possibleEndX.length < 1){
+        //put lose code here
+    }
     // $("#score").append(user.score)
+}
+function nextLevel(){
+    $("#score").text(Number($("#score").text()) + user.remaining*10)
+    $("#score").text(Number($("#score").text()) + bomb.possibleEndX.length*200)
+    $("#score").text(Number($("#score").text()) + user.salvos * 300)
+    user.levelOver = false
+    user.nextLevel = false
+    colors.number = (colors.number+1)%7
+    user.remaining = 30
+    user.salvos = 2
+    bomb.max += bomb.maxIncrease
+    bomb.maxIncrease = (bomb.maxIncrease +1)%2
+    bomb.remaining = (bomb.remaining + bomb.max < 55) ? 30 + bomb.max*2 : 55;
 }
 function game(){
     clearCanvas()
