@@ -314,17 +314,20 @@ function update(){
     // $("#score").append(user.score)
 }
 function nextLevel(){
-    $("#score").text(Number($("#score").text()) + user.remaining*10)
-    $("#score").text(Number($("#score").text()) + bomb.possibleEndX.length*200)
-    $("#score").text(Number($("#score").text()) + user.salvos * 300)
-    user.levelOver = false
-    user.nextLevel = false
-    colors.number = (colors.number+1)%7
-    user.remaining = 30
-    user.salvos = 2
-    bomb.max += bomb.maxIncrease
-    bomb.maxIncrease = (bomb.maxIncrease +1)%2
-    bomb.remaining = (bomb.remaining + bomb.max < 55) ? 30 + bomb.max*2 : 55;
+    if(bomb.possibleEndX.length > 0){
+        $("#score").text(Number($("#score").text()) + user.remaining*10)
+        $("#score").text(Number($("#score").text()) + bomb.possibleEndX.length*200)
+        $("#score").text(Number($("#score").text()) + user.salvos * 300)
+        user.levelOver = false
+        user.nextLevel = false
+        colors.number = (colors.number+1)%7
+        user.remaining = 30
+        user.salvos = 2
+        bomb.max += bomb.maxIncrease
+        bomb.maxIncrease = (bomb.maxIncrease +1)%2
+        bomb.remaining = (bomb.remaining + bomb.max < 55) ? 30 + bomb.max*2 : 55;
+        $("#score").css("color", colors.text[colors.number])
+    }
 }
 function game(){
     clearCanvas()
@@ -337,6 +340,7 @@ function game(){
     generateBomb()
     drawBomb()
     collision()
+    $("#score").css("color", colors.text[colors.number])
     if(0 !== explosionStats.x.length){
             setTimeout(explosion, 75,)
         }
@@ -346,19 +350,19 @@ document.addEventListener('keydown', keyPressed)
 document.addEventListener('keyup', keyUp)
 function keyPressed(e){
     key = e.key
-    if (key == "a") {
-        user.vx -= 2
-    }
-    else if(key == "d"){
-        user.vx += 2
-    }
-    else if (key == "w") {
-        user.vy -= 2
-    }
-    else if (key == "s") {
-        user.vy += 2
-    }
-    else if(key == " ") {
+    // if (key == "a") {
+    //     user.vx -= 2
+    // }
+    // else if(key == "d"){
+    //     user.vx += 2
+    // }
+    // else if (key == "w") {
+    //     user.vy -= 2
+    // }
+    // else if (key == "s") {
+    //     user.vy += 2
+    // }
+    if(key == " ") {
     e.preventDefault();
     if(missile.fired === false){
         user.remaining -= 1
@@ -370,13 +374,13 @@ function keyPressed(e){
 }
 function keyUp(e){
     key = e.key
-    if (key == "a" || key == "d") {
-        user.vx = 0
-    }
-    else if (key == "w" || key == "s") {
-        user.vy = 0
-    }
-    else if(key == " ") {
+    // if (key == "a" || key == "d") {
+    //     user.vx = 0
+    // }
+    // else if (key == "w" || key == "s") {
+    //     user.vy = 0
+    // }
+    if(key == " ") {
     e.preventDefault();
     if(user.lost === true){
     }
