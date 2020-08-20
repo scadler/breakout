@@ -2,6 +2,14 @@ const canvas = document.getElementById("canvas");
 const context = canvas.getContext("2d");
 
 var ctx = canvas.getContext('2d');
+var colors = {
+    city: ["#2D31B5", "#2D31B5", "#9ECF63", "#626EE4", "#976D2D", "#535CD8", "#B7D73F"],
+    ground: ["#A36220", "#87B654", "#2D31B5", "#B83131", "#72954A", "#000000", "#5CBA59"],
+    sky: ["#000000", "#000000", "#000000", "#000000", "#2D33B7", "#328331", "#4E32B5"],
+    bomb: ["#C25E6E", "#9AF49C", "#CA5E65", "#C2D845", "#E08283", "#E6FCE2", "#F8F2F3"],
+    text: ["#C4474F", "#ECECEC", "#5A5ECF", "#A26322", "#A1D065", "#E6EEE6", "#72D174"],
+    number: 0,
+}
 var user = {
     x: 100,
     y: 65,
@@ -73,8 +81,8 @@ function generateBomb(){
 function drawBomb(){
     var i = 0
     while( i < bomb.endX.length){
-        if(bomb.step[i] < 203){ 
-            ctx.strokeStyle = "#FEBFB3 ";
+        if(bomb.step[i] < 203){   
+            ctx.strokeStyle = colors.bomb[colors.number];
             ctx.beginPath();
             ctx.moveTo(bomb.initialX[i], 0);
             ctx.lineTo(bomb.x[i], bomb.y[i]);
@@ -124,7 +132,7 @@ function collision(){
     }
 }
 function clearCanvas(){
-    ctx.fillStyle = "#000000";
+    ctx.fillStyle = colors.sky[colors.number]
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 function drawCities(){
@@ -136,7 +144,7 @@ function drawCities(){
     drawCity(170)
 }
 function drawCity(x){
-    ctx.fillStyle =  "#15217E"
+    ctx.fillStyle =  colors.city[colors.number]
     //"#4041BD"'
     var index = x+5
     index = index.toString()
@@ -152,28 +160,28 @@ function drawCity(x){
 step = 0
 function drawRemainingMissiles(){
     var i = 0
+    ctx.fillStyle = colors.sky[colors.number];
     while(i < user.remaining){
-        ctx.fillStyle = "#202020";
         ctx.fillRect(7+(i*2), 122, 1, 3);
         i++;
     }
     if(user.salvos > 0){
-        ctx.fillStyle = "#202020";
         ctx.fillRect(70, 122, 6, 3);
     }
     if(user.salvos > 1){
-        ctx.fillStyle = "#202020";
         ctx.fillRect(80, 122, 6, 3);
     }
     if(user.remaining === 0){
         if(user.salvos > 0){
             user.remaining = 30;
             user.salvos -=1;
+            colors.number = (colors.number+1)%7
         }
         else if(user.salvos <= 0){
             user.remaining = 30;
             user.salvos = 3
             bomb.max += 1;
+            colors.number = (colors.number+1)%7
         }
     }
 }
@@ -221,7 +229,7 @@ function drawMissile(step){
     }
 }
 function drawGround(){
-    ctx.fillStyle = "#6A450F";
+    ctx.fillStyle = colors.ground[colors.number];
     ctx.fillRect(0, 116, 200, 14);
     ctx.fillRect(0, 110, 10, 6);
     ctx.fillRect(190, 110, 10, 6);
