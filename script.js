@@ -1,5 +1,6 @@
 const canvas = document.getElementById("canvas");
 const context = canvas.getContext("2d");
+
 var ctx = canvas.getContext('2d');
 var user = {
     x: 100,
@@ -35,6 +36,7 @@ var bomb = {
     y: [""],
     initialX: [""],
     step: [""],
+    max: 3,
 }
 var $mouseX=0,
 $mouseY=0;
@@ -57,10 +59,12 @@ ctx.fillStyle =  "#FFFFFF"
     }, 30);
 function generateBomb(){
     var i = bomb.endX.length
-    if(i < 3){
+    if(i < bomb.max){
     bomb.endX[i] = bomb.possibleEndX[(Math.floor(Math.random()*bomb.possibleEndX.length))]
     bomb.endY[i] = 110;
-    bomb.initialX[i] = Math.floor(Math.random()*201)
+    var offset = (Math.random() + 0.25 > 1) ? 10 : (Math.random() +0.5 > 1) ? 15 : (Math.random() + 0.75 > 1) ? 20: 25;
+    offset = (Math.random() > 0.5) ? offset : -offset
+    bomb.initialX[i] = Number(bomb.endX[i]) + offset
     bomb.x[i] = bomb.initialX[i]
     bomb.y[i] = 0
     bomb.step[i] = 0
@@ -69,8 +73,8 @@ function generateBomb(){
 function drawBomb(){
     var i = 0
     while( i < bomb.endX.length){
-        if(bomb.step[i] < 203){
-            ctx.strokeStyle = "#FFFF44";
+        if(bomb.step[i] < 203){ 
+            ctx.strokeStyle = "#FEBFB3 ";
             ctx.beginPath();
             ctx.moveTo(bomb.initialX[i], 0);
             ctx.lineTo(bomb.x[i], bomb.y[i]);
@@ -106,12 +110,13 @@ function collision(){
                 explosionStats.x[b] + 2.5 > bomb.x[i] -1 &&
                 explosionStats.y[b] -2.5 < bomb.y[i] + 1 &&
                 explosionStats.y[b] + 2.5 > bomb.y[i] -1){
-                bomb.initialX.splice(i, 1)
-                bomb.x.splice(i, 1)
-                bomb.y.splice(i, 1)
-                bomb.endX.splice(i, 1)
-                bomb.endY.splice(i, 1)
-                bomb.step.splice(i, 1)
+                    bomb.initialX.splice(i, 1)
+                    bomb.x.splice(i, 1)
+                    bomb.y.splice(i, 1)
+                    bomb.endX.splice(i, 1)
+                    bomb.endY.splice(i, 1)
+                    bomb.step.splice(i, 1)
+                    $("#score").text(Number($("#score").text()) + 10)
             }
         b++
         }
@@ -162,8 +167,13 @@ function drawRemainingMissiles(){
     }
     if(user.remaining === 0){
         if(user.salvos > 0){
-            user.remaining = 30
-            user.salvos -=1
+            user.remaining = 30;
+            user.salvos -=1;
+        }
+        else if(user.salvos <= 0){
+            user.remaining = 30;
+            user.salvos = 3
+            bomb.max += 1;
         }
     }
 }

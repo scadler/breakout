@@ -3,18 +3,20 @@
     background-color:black;
     height:650px;
     width:1000px;
-    image-rendering: pixelated;
+    image-rendering: pixelated; 
     border: 2px solid white;
     cursor: none;
+    z-index: 100;
 }
 html{
     background-color: #222;
 }
-/* #scoreDiv{
+#score{
     position: absolute;
-    top: 2;
-    left:2;
-    font-size: 3;
+    top: 15px;
+    left:15px;
+    font-size: 45px;
     color: white;
-    z-index: 100;
-} */
+    z-index: 1000;
+    font-family: 'Press Start 2P', cursive;
+}
