@@ -31,6 +31,7 @@ var missile = {
     x: 100,
     y: 109,
     step: 0,
+    theta: 0,
 }
 var explosionStats ={
     ready: false,
@@ -72,8 +73,8 @@ var $loop=setInterval(function() {
             else{
                 user.y = 104
             }
-ctx.fillStyle =  "#FFFFFF"
-        ctx.fillRect(Math.floor($xp/5), Math.floor($yp/5), 1, 1);
+// ctx.fillStyle =  "#FFFFFF"
+//         ctx.fillRect(Math.floor($xp/5)-2, Math.floor($yp/5), 5, 1);
     }, 30);
 function generateBomb(){
     var i = bomb.endX.length
@@ -263,9 +264,10 @@ function drawGround(){
 }
 function drawCrosshair(){
     ctx.fillStyle = "#FFFFFF";
-    ctx.fillRect(user.x - 3, user.y, 2, 1);
-    ctx.fillRect(user.x + 2, user.y, 2, 1);
-    ctx.fillRect(user.x, user.y + 2, 1, 2);
+    ctx.fillRect(user.x - 2, user.y, 5, 1);
+    // ctx.fillRect(user.x - 3, user.y, 2, 1);
+    // ctx.fillRect(user.x + 2, user.y, 2, 1);
+    // ctx.fillRect(user.x, user.y + 2, 1, 2);
 }
 function update(){
     if(user.vx > 8){
