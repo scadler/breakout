@@ -231,6 +231,7 @@ function explosion(s){
         explosionStats.x.push(missile.endX)
         explosionStats.y.push(missile.endY)
         explosion(1)
+        $('#explosionAudio').html('<audio autoplay><source src="missileExplosion.mp3"></audio>');
     }
     var i = 0;
     while(i < explosionStats.x.length){
@@ -265,6 +266,11 @@ function drawMissile(step){
             missile.y = 109;
             missile.step = 0;
             explosion(0)
+            // const explosionSound = document.getElementById("missileExplosion");
+            // console.log(explosionSound.currentTime)
+            // explosionSound.currentTime = 0;
+            // explosionSound.play();
+            // $('#explosionAudio').html('<audio autoplay><source src="missileExplosion.mp3"></audio>');
         } 
     }
 }
