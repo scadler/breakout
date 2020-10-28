@@ -403,6 +403,9 @@ function keyPressed(e){
         missile.endX = user.x;
         missile.endY = user.y;
         missile.fired = true;
+        $('#launchAudio').html('<audio autoplay><source src="launch.mp3"></audio>');
+        // var launch = new Audio('launch.mp3');
+        // launch.play();
     }
   }
 }
