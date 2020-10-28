@@ -1,6 +1,8 @@
+$(document).ready(function(){
+    $(".text").hide();
+});
 const canvas = document.getElementById("canvas");
 const context = canvas.getContext("2d");
-
 var ctx = canvas.getContext('2d');
 var colors = {
     city: ["#2D31B5", "#2D31B5", "#9ECF63", "#626EE4", "#976D2D", "#535CD8", "#B7D73F"],
@@ -131,27 +133,16 @@ function drawBomb(){
         i++
     }
 }
-function revert(i){
-    if(i < 7){
-        colors.destroySkyIndex = i
-        i++
-        setTimeout(revert, 150, i)
-    }
-    else{
-    bomb.cityDestroyed = false
-    }
-}
-
 function drawBlast(){
     if(bomb.cityDestroyed === true){
         if(blastAlpha.i < 7){
             ctx.fillStyle = "rgba(255, 255, 255, " + blastAlpha.value[blastAlpha.i] + ")";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             blastAlpha.i += 1;
+            $('#explodeCityAudio').html('<audio autoplay><source src="explodeCity.mp3"></audio>');
             if(blastAlpha.i >= 7){
                 bomb.cityDestroyed = false
                 blastAlpha.i = 0
-                $('#explodeCityAudio').html('<audio autoplay><source src="explodeCity.mp3"></audio>');
             }
         }   
     }
@@ -357,6 +348,13 @@ function nextLevel(){
         $("#score").css("color", colors.text[colors.number])
     }
 }
+function endGame(){
+    if(bomb.possibleEndX.length === 0 && bomb.x.length !== 0){
+        bomb.x = []
+        bomb.y = []
+        $(".text").show();
+    }
+}
 function game(){
     clearCanvas()
     drawGround()
@@ -373,6 +371,7 @@ function game(){
             setTimeout(explosion, 75,)
         }
     drawBlast()
+    endGame()
 }
 setInterval(game, 50)
 document.addEventListener('keydown', keyPressed)

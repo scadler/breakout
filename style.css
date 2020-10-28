@@ -1,4 +1,6 @@
-#canvas{
+@import url(//db.onlinewebfonts.com/c/47b88958a4f9f4e8439a23651ddb22d5?family=SGK075);
+@font-face {font-family: "SGK075"; src: url("//db.onlinewebfonts.com/t/47b88958a4f9f4e8439a23651ddb22d5.eot"); src: url("//db.onlinewebfonts.com/t/47b88958a4f9f4e8439a23651ddb22d5.eot?#iefix") format("embedded-opentype"), url("//db.onlinewebfonts.com/t/47b88958a4f9f4e8439a23651ddb22d5.woff2") format("woff2"), url("//db.onlinewebfonts.com/t/47b88958a4f9f4e8439a23651ddb22d5.woff") format("woff"), url("//db.onlinewebfonts.com/t/47b88958a4f9f4e8439a23651ddb22d5.ttf") format("truetype"), url("//db.onlinewebfonts.com/t/47b88958a4f9f4e8439a23651ddb22d5.svg#SGK075") format("svg"); }
+canvas{
     position: absolute;
     background-color:black;
     height:650px;
@@ -13,10 +15,34 @@ html{
 }
 #score{
     position: absolute;
-    top: 15px;
-    left:15px;
-    font-size: 45px;
+    top: -120px;
+    left:30px;
+    font-size: 120px;
     color: white;
     z-index: 1000;
-    font-family: 'Press Start 2P', cursive;
+    font-family: 'SGK075', cursive;
+    /* font-family: 'Press Start 2P', cursive; */
+}
+.text{
+    position: absolute;
+    z-index: 1000;
+    font-family: 'SGK075', cursive;
+    text-align: center;
+    color: white;
+}
+#topEndText{
+    left: 18px;
+    top: -100px;
+    width: 1000px;
+    font-size: 240;
+}
+#bottomEndText{
+    position: absolute;
+    left: 16px;
+    top: 200px;
+    z-index: 1000;
+    width: 1000px;
+    height: 200px;
+    font-size: 100;
+    letter-spacing: 2.5px;
 }

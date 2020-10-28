@@ -1,16 +1,20 @@
 <html>
 
 <head>
+<!-- https://www.onlinewebfonts.com/search?q=pixel-7 -->
     <title>Missile Command</title>
 	<link type="text/css" rel="stylesheet" href="style.css" />
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="//db.onlinewebfonts.com/c/47b88958a4f9f4e8439a23651ddb22d5?family=SGK075" rel="stylesheet" type="text/css"/>
 </head>
 
 <body>
     <canvas id="canvas" height="130" width="200" onkeypress="keyPressed(e)"> </canvas>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 	<script src="script.js"></script>
-    <p id="score">0</p>
+    <p id="score">-50</p>
+    <p id="topEndText" class="text">GAME OVER</p>
+    <p id="bottomEndText" class="text">ALL CITIES DESTROYED</p>
     <span id="launchAudio"></span>
     <span id="explosionAudio"></span>
     <span id="explodeCityAudio"></span>
