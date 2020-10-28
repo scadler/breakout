@@ -1,7 +1,7 @@
 $(document).ready(function(){
     $(".text").hide();
 });
-
+//test
 const canvas = document.getElementById("canvas");
 const context = canvas.getContext("2d");
 var ctx = canvas.getContext('2d');
