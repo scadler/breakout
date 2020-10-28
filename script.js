@@ -27,6 +27,7 @@ var user = {
 }
 var missile = {
     fired: false,
+    ready: true,
     endX: 100,
     endY: 65,
     x: 100,
@@ -171,6 +172,7 @@ function collision(){
                     bomb.endY.splice(i, 1)
                     bomb.step.splice(i, 1)
                     $("#score").text(Number($("#score").text()) + 50)
+                    $('#explosionAudio').html('<audio autoplay><source src="missileExplosion.mp3"></audio>');
             }
         b++
         }
@@ -232,7 +234,6 @@ function explosion(s){
         explosionStats.x.push(missile.endX)
         explosionStats.y.push(missile.endY)
         explosion(1)
-        $('#explosionAudio').html('<audio autoplay><source src="missileExplosion.mp3"></audio>');
     }
     var i = 0;
     while(i < explosionStats.x.length){
@@ -262,16 +263,14 @@ function drawMissile(step){
             setTimeout(drawMissile, 100, missile.step)
         } 
         if(missile.y < missile.endY){
-            missile.fired = false;
             missile.x = 100;
             missile.y = 109;
             missile.step = 0;
+            missile.fired = false
             explosion(0)
-            // const explosionSound = document.getElementById("missileExplosion");
-            // console.log(explosionSound.currentTime)
-            // explosionSound.currentTime = 0;
-            // explosionSound.play();
-            // $('#explosionAudio').html('<audio autoplay><source src="missileExplosion.mp3"></audio>');
+            setTimeout(function(){
+                 missile.ready = true
+            }, 200)
         } 
     }
 }
@@ -382,11 +381,12 @@ function keyPressed(e){
     key = e.key
     if(key == " ") {
     e.preventDefault();
-    if(missile.fired === false){
+    if(missile.fired === false && missile.ready === true){
         user.remaining -= 1
         missile.endX = user.x;
         missile.endY = user.y;
         missile.fired = true;
+        missile.ready = false
         $('#launchAudio').html('<audio autoplay><source src="launch.mp3"></audio>');
 
     }
