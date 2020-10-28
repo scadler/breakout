@@ -79,8 +79,6 @@ var $loop=setInterval(function() {
             else{
                 user.y = 104
             }
-// ctx.fillStyle =  "#FFFFFF"
-//         ctx.fillRect(Math.floor($xp/5)-2, Math.floor($yp/5), 5, 1);
     }, 30);
 function generateBomb(){
     var i = bomb.endX.length
@@ -192,7 +190,6 @@ function drawCities(){
 }
 function drawCity(x){
     ctx.fillStyle =  colors.city[colors.number]
-    //"#4041BD"'
     var index = x+5
     index = index.toString()
     ctx.fillRect(x, 115, 10, 1);
@@ -225,10 +222,6 @@ function drawRemainingMissiles(){
         }
         else if(user.salvos <= 0){
             user.levelOver = true
-            // user.remaining = 30;
-            // user.salvos = 3
-            // bomb.max += 1;
-            // colors.number = (colors.number+1)%7
         }
     }
 }
@@ -296,9 +289,6 @@ function drawGround(){
 function drawCrosshair(){
     ctx.fillStyle = "#FFFFFF";
     ctx.fillRect(user.x - 2, user.y, 5, 1);
-    // ctx.fillRect(user.x - 3, user.y, 2, 1);
-    // ctx.fillRect(user.x + 2, user.y, 2, 1);
-    // ctx.fillRect(user.x, user.y + 2, 1, 2);
 }
 function update(){
     if(user.vx > 8){
@@ -344,7 +334,6 @@ function update(){
     else if(bomb.possibleEndX.length < 1){
         //put lose code here
     }
-    // $("#score").append(user.score)
 }
 function nextLevel(){
     if(bomb.possibleEndX.length > 0){
@@ -384,18 +373,6 @@ document.addEventListener('keydown', keyPressed)
 document.addEventListener('keyup', keyUp)
 function keyPressed(e){
     key = e.key
-    // if (key == "a") {
-    //     user.vx -= 2
-    // }
-    // else if(key == "d"){
-    //     user.vx += 2
-    // }
-    // else if (key == "w") {
-    //     user.vy -= 2
-    // }
-    // else if (key == "s") {
-    //     user.vy += 2
-    // }
     if(key == " ") {
     e.preventDefault();
     if(missile.fired === false){
@@ -410,12 +387,6 @@ function keyPressed(e){
 }
 function keyUp(e){
     key = e.key
-    // if (key == "a" || key == "d") {
-    //     user.vx = 0
-    // }
-    // else if (key == "w" || key == "s") {
-    //     user.vy = 0
-    // }
     if(key == " ") {
     e.preventDefault();
     if(user.lost === true){
