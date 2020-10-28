@@ -137,10 +137,13 @@ function drawBomb(){
 function drawBlast(){
     if(bomb.cityDestroyed === true){
         if(blastAlpha.i < 7){
+            if(blastAlpha.i === 0){
+                $('#explodeCityAudio').html('<audio autoplay><source src="explodeCity.mp3"></audio>');
+            }
             ctx.fillStyle = "rgba(255, 255, 255, " + blastAlpha.value[blastAlpha.i] + ")";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             blastAlpha.i += 1;
-            $('#explodeCityAudio').html('<audio autoplay><source src="explodeCity.mp3"></audio>');
+            
             if(blastAlpha.i >= 7){
                 bomb.cityDestroyed = false
                 blastAlpha.i = 0
@@ -353,6 +356,7 @@ function endGame(){
     if(bomb.possibleEndX.length === 0 && bomb.x.length !== 0){
         bomb.x = []
         bomb.y = []
+        $(".text").css("color", colors.text[colors.number])
         $(".text").show();
     }
 }
