@@ -150,6 +150,7 @@ function drawBlast(){
             if(blastAlpha.i >= 7){
                 bomb.cityDestroyed = false
                 blastAlpha.i = 0
+                $('#explodeCityAudio').html('<audio autoplay><source src="explodeCity.mp3"></audio>');
             }
         }   
     }
