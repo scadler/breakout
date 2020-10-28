@@ -6,7 +6,6 @@ var colors = {
     city: ["#2D31B5", "#2D31B5", "#9ECF63", "#626EE4", "#976D2D", "#535CD8", "#B7D73F"],
     ground: ["#A36220", "#87B654", "#2D31B5", "#B83131", "#72954A", "#000000", "#5CBA59"],
     sky: ["#000000", "#000000", "#000000", "#000000", "#2D33B7", "#328331", "#4E32B5"],
-    destroySky: ["#555555", "#AAAAAA", "#FFFFFF", "#AAAAAA", "#555555",],
     destroySkyIndex: 0,
     bomb: ["#C25E6E", "#9AF49C", "#CA5E65", "#C2D845", "#E08283", "#E6FCE2", "#F8F2F3"],
     text: ["#C4474F", "#ECECEC", "#5A5ECF", "#A26322", "#A1D065", "#E6EEE6", "#72D174"],
@@ -53,6 +52,10 @@ var bomb = {
     maxIncrease: 0,
     remaining: 30,
     cityDestroyed: false,
+}
+var blastAlpha = {
+    value: ["0.4", "0.5", "0.6","0.5","0.4","0.3","0.2"],
+    i: 0,
 }
 var $mouseX=0,
 $mouseY=0;
@@ -115,10 +118,9 @@ function drawBomb(){
             while(b < bomb.possibleEndX.length){
                 if( bomb.possibleEndX[b] === bomb.endX[i]){
                     bomb.possibleEndX.splice(b,1)
+                    bomb.cityDestroyed = true
                 }
                 b++
-                bomb.cityDestroyed = true
-                revert(0)
             }
             bomb.endX.shift()
             bomb.endY.shift()
@@ -131,14 +133,27 @@ function drawBomb(){
     }
 }
 function revert(i){
-    if(i < 5){
-        i = i%5
+    if(i < 7){
         colors.destroySkyIndex = i
         i++
-        setTimeout(revert, 50, i)
+        setTimeout(revert, 150, i)
     }
     else{
     bomb.cityDestroyed = false
+    }
+}
+
+function drawBlast(){
+    if(bomb.cityDestroyed === true){
+        if(blastAlpha.i < 7){
+            ctx.fillStyle = "rgba(255, 255, 255, " + blastAlpha.value[blastAlpha.i] + ")";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            blastAlpha.i += 1;
+            if(blastAlpha.i >= 7){
+                bomb.cityDestroyed = false
+                blastAlpha.i = 0
+            }
+        }   
     }
 }
 function collision(){
@@ -164,7 +179,7 @@ function collision(){
     }
 }
 function clearCanvas(){
-    ctx.fillStyle = (bomb.cityDestroyed === false) ? colors.sky[colors.number] : colors.destroySky[colors.destroySkyIndex];
+    ctx.fillStyle = colors.sky[colors.number];
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 function drawCities(){
@@ -362,6 +377,7 @@ function game(){
     if(0 !== explosionStats.x.length){
             setTimeout(explosion, 75,)
         }
+    drawBlast()
 }
 setInterval(game, 50)
 document.addEventListener('keydown', keyPressed)
